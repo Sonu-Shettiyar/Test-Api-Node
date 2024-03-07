@@ -22,6 +22,7 @@ const activitySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  
 });
 
 const Task = mongoose.model('Task', activitySchema);

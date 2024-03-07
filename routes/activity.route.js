@@ -45,6 +45,7 @@ router.get('/tasks/:id', async (req, res) => {
 router.get('/meetings/:id', async (req, res) => {
     try {
         const data = await Meeting.find({userId:req.params.id});
+        const data = await Meeting.find({userId:req.params.id});
         res.status(200).json(data);
     } catch (error) {
         console.error(error);
@@ -54,6 +55,7 @@ router.get('/meetings/:id', async (req, res) => {
  
 router.get('/calls/:id', async (req, res) => {
     try {
+        const data = await Call.find({userId:req.params.id});
         const data = await Call.find({userId:req.params.id});
         res.status(200).json(data);
     } catch (error) {
@@ -133,6 +135,7 @@ router.post('/tasks/closetask', async (req, res) => {
   router.get('/tasks/closetask/:id', async (req, res) => {
     try {
         const data = await CloseTask.find({userId:req.params.id});
+        const data = await CloseTask.find({userId:req.params.id});
         res.status(200).json(data);
     } catch (error) {
         console.error(error);
@@ -143,6 +146,7 @@ router.post('/tasks/closetask', async (req, res) => {
 router.get('/meetings/closemeeting/:id', async (req, res) => {
     try {
         const data = await CloseMeeting.find({userId:req.params.id});
+        const data = await CloseMeeting.find({userId:req.params.id});
         res.status(200).json(data);
     } catch (error) {
         console.error(error);
@@ -152,6 +156,7 @@ router.get('/meetings/closemeeting/:id', async (req, res) => {
  
 router.get('/calls/closecall/:id', async (req, res) => {
     try {
+        const data = await CloseCall.find({userId:req.params.id});
         const data = await CloseCall.find({userId:req.params.id});
         res.status(200).json(data);
     } catch (error) {
