@@ -186,7 +186,7 @@ router.delete('/closemeetings/:id', async (req, res) => {
       if (!deletedData) {
           return res.status(404).json({ error: 'Data not found' });
       }
-      res.status(200).json({ message: 'Data deleted successfully' });
+      res.status(200).json({data:deletedData,msg:"data is deleted"});
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -201,13 +201,30 @@ router.delete('/closecalls/:id', async (req, res) => {
       if (!deletedData) {
           return res.status(404).json({ error: 'Data not found' });
       }
-      res.status(200).json({ message: 'Data deleted successfully' });
+      res.status(200).json({data:deletedData,msg:"data deleted sucessfuly" });
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
   }
 });
  
+
+router.delete('/deleteAllData/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+      await Task.deleteMany({userId:id});
+      await Call.deleteMany({userId:id});
+      await Meeting.deleteMany({userId:id});
+      await CloseMeeting.deleteMany({userId:id});
+      await CloseTask.deleteMany({userId:id});
+      await CloseCall.deleteMany({userId:id});
+      res.status(200).json({error:"deleted all data" });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
  
 const transporter = nodemailer.createTransport({
   host: 'smtp.office365.com',

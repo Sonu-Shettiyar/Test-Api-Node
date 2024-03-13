@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`); // Use the original filename for uploaded files
   }
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage ,limits:{ fileSize: 1024 * 1024 } });
 
 router.post('/attachmnetpost', upload.single('attachmentfiles'), async (req, res) => {
   try {
