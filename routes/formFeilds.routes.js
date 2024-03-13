@@ -178,19 +178,13 @@ for(const key of g.keys()){
   }
 }
 
-for(const key of g.keys()){
-  if (key.includes(' Owner')) {
-    foun1 = true;
-    owenr = key;
-    break;
-  }
-}
+
   
       const newdata = {
         'sections.0.fields.Email': Email,
         'sections.0.fields.Secondary Email': SecondEmail,
         ['sections.0.fields.' + foundkey]: name,
-        ['sections.0.fields.'+ owenr]: owner,
+      
       };
   
       const updatedDocument = await FormDataModel.findOneAndUpdate(
