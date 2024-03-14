@@ -380,14 +380,21 @@ router.get('/gettimline/:id', async (req, res) => {
   const today = new Date();
   const fordays = new Date(today);
    fordays.setDate(today.getDate()-4)
-    const existingDocument = await Update.findOne({ id: id,"updates.date":{$gte:fordays.toISOString(),$lte:today.toISOString()}  });
-
+    let existingDocument = await Update.findOne({ id: id,"updates.date":{$gte:fordays.toISOString(),$lte:today.toISOString()}});
+       
     res.status(200).json({ existingDocument });
   } catch (error) {
     console.error('Error saving update:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+
+
+
+
+
 
 router.post('/insetTages/:id', upload.none(), async (req, res) => {
   try {
