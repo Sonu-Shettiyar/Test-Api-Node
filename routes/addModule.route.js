@@ -48,7 +48,6 @@ router.post('/', async (req, res) => {
 // Get all documents
 router.get('/', async (req, res) => {
   try {
-    console.log('came')
     const documents = await MainLayoutModel.find({approved:true});
     res.json(documents);
   } catch (error) {
@@ -86,7 +85,6 @@ router.put('/:id', async (req, res) => {
 
 // Update specific fields of a document by ID
 router.patch('/:id', async (req, res) => {
-  console.log(req.params, 'parararararr')
   try {
     const updatedDocument = await MainLayoutModel.findByIdAndUpdate(
       req.params.id,

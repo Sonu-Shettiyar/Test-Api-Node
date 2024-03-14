@@ -54,7 +54,6 @@ router.get('/', async (req, res) => {
  
 router.get('/module/:moduleId', async (req, res) => {
     const { moduleId } = req.params;
-    // console.log(req.params);
     try {
         const data = await FormDataModel.find({ moduleId: moduleId }).populate('moduleId');
         res.status(200).json(data);
@@ -69,7 +68,6 @@ router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const data = await FormDataModel.findById(id);
-        // console.log(data,'adatatattat---------------')
         if (!data) {
             return res.status(404).json({ error: 'Data not found' });
         }
@@ -131,7 +129,6 @@ router.delete('/:id', async (req, res) => {
 router.post('/deletephoto/:photoid', async (req, res) => {
     try {
       const { photoid } = req.params;
-    //   console.log(photoid);
 
       const result = await FormDataModel.findByIdAndUpdate({_id:photoid},{image:""});
       res.status(201).json(result);
@@ -144,9 +141,6 @@ router.post('/deletephoto/:photoid', async (req, res) => {
   router.post('/addphoto/:id', async (req, res) => {
     try {
       const { id } = req.params;
-      console.log(req.body);
-        
-
       const result = await FormDataModel.findByIdAndUpdate({_id:id},{image: req.body.data }, { new: true });
       res.status(201).json('ssssssssss');
     } catch (error) {
