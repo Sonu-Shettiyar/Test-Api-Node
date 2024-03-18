@@ -99,8 +99,13 @@ router.post('/noteplacement', upload.array('files', 10), async (req, res) => {
 
    
     const result = await newData.save();
+    if (result) {
+      res.status(201).json(result); 
+    }else{
+      res.status(400).json(result);
+    }
 
-    res.status(201).json(result); // Send the saved data back as JSON response
+   // Send the saved data back as JSON response
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -401,7 +406,7 @@ router.post('/insetTages/:id', upload.none(), async (req, res) => {
     const { id } = req.params;
     const { tags, selected } = req.body;
 
-    const tagColorPairs = tags.map(tagColor => {
+    const tagColorPairs = tags?.map(tagColor => {
       const [tag, color] = tagColor.split(':');
       return { tag, color };
     });
