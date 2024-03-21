@@ -149,37 +149,60 @@ router.post('/addphoto/:id', async (req, res) => {
     }
 });
 
-router.patch('/infodata/:id', async (req, res) => {
+  router.patch('/infodata/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const sum = await FormDataModel.findOne({ _id: id });
-        if (!sum) {
-            res.status(400).json({ msg: "document not found" });
-        }
-        const newdata = {
-            'sections.0.fields.Email': req.body.Email,
-            'sections.0.fields.Secondary Email': req.body.SecondEmail,
-            'sections.0.fields.Untitled Name': req.body.name,
-            'sections.0.fields.Untitled Owner': req.body.owner,
+      const { id } = req.params;
+   
+  
+      const { Email, SecondEmail, owner,name } = req.body;
+  
+      const sum = await FormDataModel.findOne({ _id: id });
+      const g = sum.sections[0].fields;
+   
+      let found = false;
+      let foundkey  = null;
+      let owenr = null;
+      let foun1 = false;
+    
+for(const key of g.keys()){
+  if (key.includes(' Name')) {
+    found = true;
+    foundkey = key;
+    break;
+  }
+}
 
-        }
-        const updatedDocument = await FormDataModel.findOneAndUpdate(
-            { _id: id, 'sections._id': sum.sections[0]._id },
-            { $set: newdata },
-            { new: true }
-        );
 
-
-        res.status(200).json(updatedDocument);
+  
+      const newdata = {
+        'sections.0.fields.Email': Email,
+        'sections.0.fields.Secondary Email': SecondEmail,
+        ['sections.0.fields.' + foundkey]: name,
+      
+      };
+  
+      const updatedDocument = await FormDataModel.findOneAndUpdate(
+        { _id: id, 'sections._id': sum.sections[0]._id },
+        { $set: newdata },
+        { new: true }
+      );
+  
+      res.status(200).json(updatedDocument);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
+  });
+  
+  
 
 
-});
 
 
+
+
+  
+  
 
 
 module.exports = router;

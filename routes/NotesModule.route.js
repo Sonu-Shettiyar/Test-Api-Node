@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`); // Use the original filename for uploaded files
   }
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage ,limits:{ fileSize: 1024 * 1024 } });
 
 router.post('/attachmnetpost', upload.single('attachmentfiles'), async (req, res) => {
   try {
@@ -99,8 +99,13 @@ router.post('/noteplacement', upload.array('files', 10), async (req, res) => {
 
    
     const result = await newData.save();
+    if (result) {
+      res.status(201).json(result); 
+    }else{
+      res.status(400).json(result);
+    }
 
-    res.status(201).json(result); // Send the saved data back as JSON response
+   // Send the saved data back as JSON response
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -380,8 +385,8 @@ router.get('/gettimline/:id', async (req, res) => {
   const today = new Date();
   const fordays = new Date(today);
    fordays.setDate(today.getDate()-4)
-    const existingDocument = await Update.findOne({ id: id,"updates.date":{$gte:fordays.toISOString(),$lte:today.toISOString()}  });
-
+    let existingDocument = await Update.findOne({ id: id,"updates.date":{$gte:fordays.toISOString(),$lte:today.toISOString()}});
+       
     res.status(200).json({ existingDocument });
   } catch (error) {
     console.error('Error saving update:', error);
@@ -389,16 +394,34 @@ router.get('/gettimline/:id', async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
 router.post('/insetTages/:id', upload.none(), async (req, res) => {
   try {
     const { id } = req.params;
     const { tags, selected } = req.body;
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', tags);
+    let tagColorPairs;
 
-    const tagColorPairs = tags.map(tagColor => {
-      const [tag, color] = tagColor.split(':');
-      return { tag, color };
-    });
-   console.log(selected);
+    if (Array.isArray(tags) && tags.length > 1) {
+      tagColorPairs = tags.map(tagColor => {
+        const [tag, color] = tagColor.split(':');
+        return { tag, color };
+      });
+    } else if (typeof tags === 'string') {
+      const [tag, color] = tags.split(':');
+      tagColorPairs = [{ tag, color }];
+    } else {
+    
+      tagColorPairs = [];
+    }
+ 
+ 
 
     const pum = selected.split(',');
     const existingDocument = await Tagsmodel.findOne({ id });
