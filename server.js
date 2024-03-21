@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-const allowedOrigins = ['http://localhost:8889'];
+const allowedOrigins = ['http://localhost:8889','https://deft-gelato-807461.netlify.app'];
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {

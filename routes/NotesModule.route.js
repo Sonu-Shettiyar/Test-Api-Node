@@ -405,12 +405,23 @@ router.post('/insetTages/:id', upload.none(), async (req, res) => {
   try {
     const { id } = req.params;
     const { tags, selected } = req.body;
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', tags);
+    let tagColorPairs;
 
-    const tagColorPairs = tags?.map(tagColor => {
-      const [tag, color] = tagColor.split(':');
-      return { tag, color };
-    });
-   console.log(selected);
+    if (Array.isArray(tags) && tags.length > 1) {
+      tagColorPairs = tags.map(tagColor => {
+        const [tag, color] = tagColor.split(':');
+        return { tag, color };
+      });
+    } else if (typeof tags === 'string') {
+      const [tag, color] = tags.split(':');
+      tagColorPairs = [{ tag, color }];
+    } else {
+    
+      tagColorPairs = [];
+    }
+ 
+ 
 
     const pum = selected.split(',');
     const existingDocument = await Tagsmodel.findOne({ id });
